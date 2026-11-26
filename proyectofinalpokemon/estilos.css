@@ -1,0 +1,128 @@
+/* ---------- BASE ---------- */
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; background: #071329;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Courier New", monospace;
+}
+
+/* La escena: 16:9, se adapta a la pantalla. container-type permite usar "cqw"
+   (1cqw = 1% del ancho de la escena) para que los textos escalen con ella. */
+.escena {
+  position: relative; width: min(100vw, 172.5vh); width: min(100vw, 172.5dvh); aspect-ratio: 16 / 9;
+  overflow: hidden; container-type: inline-size; image-rendering: pixelated;
+}
+.pantalla { position: absolute; inset: 0; }
+.oculta { display: none !important; }
+.escena img { position: absolute; display: block; }
+.fondo { inset: 0; width: 100%; height: 100%; }
+
+/* ---------- INICIO ---------- */
+#titulo { left: 28%; top: 7%; width: 45%; height: 29%; object-fit: contain; }
+.boton-inicio { left: 39%; width: 22%; height: 15%; object-fit: contain; cursor: pointer; }
+#botonJugar { left: 34%; width: 32%; top: 37%; height: 21%; }
+#botonComoJugar { left: 34%; width: 32%; top: 59%; height: 21%; }
+#botonPokedex { top: 82%; height: 13%; }
+
+/* ---------- CÓMO JUGAR ---------- */
+#cuadroReglas { left: 23%; top: 18%; width: 54%; height: 54%; object-fit: contain; }
+#botonListo { left: 38%; top: 76%; width: 24%; height: 14%; object-fit: contain; cursor: pointer; }
+
+/* ---------- BATALLA: Pokémon y efectos ---------- */
+.sprite-rival, .efecto-rival   { left: 63%; top: 3%;  width: 22%; height: 36%; object-fit: contain; object-position: bottom; }
+.sprite-jugador, .efecto-jugador { left: 12%; top: 30%; width: 22%; height: 37%; object-fit: contain; object-position: bottom; }
+.efecto-rival, .efecto-jugador { z-index: 5; }
+
+/* Parpadeo del efecto: se repite 4 veces (visible -> invisible -> visible) */
+.parpadeo { animation: parpadeo 0.25s linear 4; }
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ---------- BATALLA: globos ---------- */
+.globo { position: absolute; }
+.globo > img { inset: 0; width: 100%; height: 100%; }
+.globo-rival    { left: 19%; top: 3%;  width: 44%; height: 27%; }
+.globo-jugador  { left: 36%; top: 37%; width: 44%; height: 27%; }
+.globo .contenido {
+  position: absolute; left: 15%; right: 12%; top: 14%; bottom: 36%;
+  display: flex; flex-direction: column; justify-content: center; gap: 0.3cqw;
+  color: #222; font-weight: bold; font-size: 1.9cqw;
+}
+.globo small { font-size: 1.4cqw; text-align: right; }
+
+/* Barra de HP: el "relleno" cambia de ancho y color desde JavaScript */
+.barra { height: 1.4cqw; background: #444; border: 0.25cqw solid #222; border-radius: 0.5cqw; overflow: hidden; }
+.relleno {
+  height: 100%; width: 100%; background-color: #3ddc3d;
+  transition: width 0.6s ease, background-color 0.6s ease;   /* animación gradual */
+}
+
+/* ---------- BATALLA: panel inferior ---------- */
+.panel-fondo { left: 0; top: 66%; width: 100%; height: 34%; }
+.caja-texto { position: absolute; left: 3%; top: 71%; width: 49%; height: 27%; }
+.caja-texto img { inset: 0; width: 100%; height: 100%; }
+#mensajes {
+  position: absolute; inset: 12% 6%; overflow-y: auto;
+  font-size: 1.9cqw; color: #1b2a4a; line-height: 1.25;
+}
+#mensajes p { margin: 0 0 0.4em; }
+
+/* Botones de acción (imágenes) en cuadrícula de 2 columnas */
+#menu {
+  position: absolute; left: 56%; top: 72%; width: 38%; height: 25%;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1cqw;
+}
+#menu.una-columna { grid-template-columns: 1fr; }     /* Mochila: botones apilados */
+#menu.ocupado { opacity: 0.5; pointer-events: none; } /* mientras juega el rival */
+#menu img { position: static; width: 100%; height: 100%; object-fit: contain; cursor: pointer; }
+#menu img:hover, .boton-inicio:hover, #botonListo:hover { filter: brightness(1.15); }
+
+#botonX { right: 2%; top: 67.5%; width: 3.2%; cursor: pointer; z-index: 6; }
+
+/* ---------- FINAL ---------- */
+#pantallaFinal { cursor: pointer; }
+#textoFinal { left: 12%; top: 22%; width: 76%; height: 48%; object-fit: contain; }
+
+/* Efecto de botones de inicio: crecen al pasar el mouse y se hunden al hacer clic */
+.boton-inicio, #botonListo, #botonListoPokedex, .flecha { transition: transform 0.1s ease, filter 0.1s ease; }
+.boton-inicio:hover, #botonListo:hover, #botonListoPokedex:hover, .flecha:hover { transform: scale(1.08); filter: brightness(1.15); }
+.boton-inicio:active, #botonListo:active, #botonListoPokedex:active, .flecha:active { transform: scale(0.95); filter: brightness(0.9); }
+
+/* Tamaño extra de algunos Pokémon del jugador (sus imágenes se ven pequeñas).
+   Crecen desde abajo para que sus pies sigan en el mismo lugar. Cambia el número para ajustar. */
+.sprite-jugador, .efecto-jugador { transform-origin: bottom center; }
+/* translateY baja al Pokémon (más % = más abajo); scale lo agranda. Ajusta estos números a tu gusto. */
+.sprite-jugador.charmander, .efecto-jugador.charmander { transform: translateY(25%) scale(1.45); }
+.sprite-jugador.bulbasaur,  .efecto-jugador.bulbasaur  { transform: translateY(60%) scale(1.75); }
+
+/* Menú de equipo (Cambiar Pokémon y elegir a quién curar): botones más grandes */
+#menu.equipo { left: 53%; width: 44%; top: 70.5%; height: 28%; column-gap: 2cqw; }
+#menu.equipo img { transform: scale(1.15); }
+
+
+/* ---------- POKÉDEX ---------- */
+#botonListoPokedex { left: 36%; top: 71%; width: 28%; height: 16%; object-fit: contain; cursor: pointer; }
+
+/* Las imágenes de las flechas son cuadradas y traen espacio transparente alrededor,
+   por eso son más grandes que la flecha visible. Ajusta left/top si quieres moverlas. */
+.flecha { width: 20.4%; height: 36.3%; top: 61.4%; cursor: pointer; }
+#flechaDerecha   { left: 83%; }
+#flechaIzquierda { left: 0.4%; }
+
+/* Cada carta: la imagen vacía de fondo y encima los textos, colocados con porcentajes de la carta */
+.carta-pokedex { position: absolute; top: 7.5%; width: 25.4%; aspect-ratio: 724 / 1011; }
+.carta-pokedex img { inset: 0; width: 100%; height: 100%; }
+.carta-pokedex .dato {
+  position: absolute; display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: "Press Start 2P", "Courier New", monospace; color: #1b1b1b; white-space: nowrap;
+}
+.dato.nivel  { left: 8%;  top: 5.8%;  width: 21%;   height: 5.2%;  font-size: 0.75cqw; }
+.dato.nombre { left: 9%;  top: 12.5%; width: 82%;   height: 6%;    font-size: 1.5cqw; }
+.dato.info   { left: 8.2%; top: 56.5%; width: 83.5%; height: 29.5%; font-size: 1.25cqw; flex-direction: column; justify-content: space-evenly; }
+.dato.stat   { top: 87%; height: 8%; flex-direction: column; gap: 0.3cqw; font-size: 0.7cqw; }
+.dato.stat b { font-size: 1.1cqw; font-weight: normal; }
+.dato.stat1 { left: 9%;  width: 29%; }
+.dato.stat2 { left: 40%; width: 26%; }
+.dato.stat3 { left: 66%; width: 25%; }

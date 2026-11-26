@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batalla Pokémon</title>
+  <!-- Fuente pixelada para las cartas de la Pokédex (si no carga, se usa una de respaldo) -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <!-- La "escena" siempre mantiene proporción 16:9; todo dentro se coloca con porcentajes -->
+  <div class="escena">
+
+    <!-- PANTALLA DE INICIO -->
+    <section id="pantallaInicio" class="pantalla">
+      <img class="fondo" src="imagenes/FondoImagen-inicio.png" alt="">
+      <img id="titulo" src="imagenes/TituloTexto-pokemon.png" alt="Pokémon">
+      <img id="botonJugar" class="boton-inicio" src="imagenes/Boton-Jugar.png" alt="Jugar">
+      <img id="botonComoJugar" class="boton-inicio" src="imagenes/Boton-ComoJugar.png" alt="Cómo jugar">
+      <img id="botonPokedex" class="boton-inicio" src="imagenes/Boton-Pokedex.png" alt="Pokédex">
+    </section>
+
+    <!-- PANTALLA CÓMO JUGAR -->
+    <section id="pantallaComoJugar" class="pantalla oculta">
+      <img class="fondo" src="imagenes/FondoImagen-inicio.png" alt="">
+      <img id="cuadroReglas" src="imagenes/CuadroAmarillo-comojugar.png" alt="Reglas">
+      <img id="botonListo" src="imagenes/Boton-Listo.png" alt="Listo">
+    </section>
+
+    <!-- PANTALLA POKÉDEX (las cartas se crean desde JavaScript y se llenan con PokéAPI) -->
+    <section id="pantallaPokedex" class="pantalla oculta">
+      <img class="fondo" src="imagenes/FondoImagen-inicio.png" alt="">
+      <div id="cartasPokedex"></div>
+      <img id="flechaDerecha" class="flecha" src="imagenes/FlechaDerecha.png" alt="Ver cartas del rival">
+      <img id="flechaIzquierda" class="flecha oculta" src="imagenes/FlechaIzquierda.png" alt="Ver cartas del jugador">
+      <img id="botonListoPokedex" src="imagenes/Boton-Listo.png" alt="Listo">
+    </section>
+
+    <!-- PANTALLA DE BATALLA -->
+    <section id="pantallaBatalla" class="pantalla oculta">
+      <img class="fondo" src="imagenes/FondoImagen-Batalla.png" alt="">
+
+      <!-- Pokémon activos -->
+      <img id="spriteRival" class="sprite-rival" alt="">
+      <img id="spriteJugador" class="sprite-jugador" alt="">
+
+      <!-- Efectos de ataque (ocultos hasta que haya un ataque) -->
+      <img id="efectoRival" class="efecto-rival oculta" alt="">
+      <img id="efectoJugador" class="efecto-jugador oculta" alt="">
+
+      <!-- Globo del rival: nombre + barra de HP -->
+      <div class="globo globo-rival">
+        <img src="imagenes/CuadroDeAccionRival-CuadroDeTexto.png" alt="">
+        <div class="contenido">
+          <span id="nombreRival"></span>
+          <div class="barra"><div id="barraRival" class="relleno"></div></div>
+          <small id="numerosRival"></small>
+        </div>
+      </div>
+
+      <!-- Globo del jugador: nombre + barra de HP + números -->
+      <div class="globo globo-jugador">
+        <img src="imagenes/CuadroDeAccionJugador-CuadroDeTexto.png" alt="">
+        <div class="contenido">
+          <span id="nombreJugador"></span>
+          <div class="barra"><div id="barraJugador" class="relleno"></div></div>
+          <small id="numerosJugador"></small>
+        </div>
+      </div>
+
+      <!-- Panel inferior -->
+      <img class="panel-fondo" src="imagenes/CuadroGrisVacio.png" alt="">
+      <div class="caja-texto">
+        <img src="imagenes/CuadroTexto.png" alt="">
+        <div id="mensajes"></div>
+      </div>
+      <div id="menu"></div>
+      <img id="botonX" class="oculta" src="imagenes/Boton-X.png" alt="Volver">
+    </section>
+
+    <!-- PANTALLA FINAL (victoria o derrota) -->
+    <section id="pantallaFinal" class="pantalla oculta">
+      <img class="fondo" src="imagenes/FondoImagen-inicio.png" alt="">
+      <img id="textoFinal" alt="">
+    </section>
+
+  </div>
+
+  <script src="batalla.js"></script>
+</body>
+</html>

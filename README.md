@@ -70,7 +70,7 @@ Mariela Torres Torres
 - **[PokéAPI](https://pokeapi.co/)**: API REST gratuita y de código abierto con información de Pokémon, creada y mantenida por la comunidad. Se usa en la Pokédex mediante el endpoint `https://pokeapi.co/api/v2/pokemon/{nombre}` para obtener el nombre oficial y el tipo de cada Pokémon. No requiere llave de acceso.
 
 ## Link GitHub Pages
-
+https://marielatorres1007-svg.github.io/proyectofinalpokemon_con_pokedex/
 
 ### Aviso
 
